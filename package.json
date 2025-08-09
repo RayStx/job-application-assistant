@@ -1,0 +1,44 @@
+{
+  "name": "job-assistant-extension",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI-powered job application tracker with professional resume management and LaTeX support",
+  "keywords": ["chrome-extension", "job-search", "resume", "ai", "latex", "career"],
+  "author": "Job Assistant Extension Team",
+  "license": "MIT",
+  "homepage": "https://github.com/YOUR_USERNAME/job-assistant-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/job-assistant-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/job-assistant-extension/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:prod": "NODE_ENV=production vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "diff": "^8.0.2",
+    "mammoth": "^1.6.0",
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.246",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "terser": "^5.43.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
+}
