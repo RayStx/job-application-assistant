@@ -71,7 +71,7 @@ React + TypeScript + Chrome Extension API. Local browser storage only, privacy-f
 
 ## Getting it running
 
-This is a development extension
+This is a development extension. Download from [releases](https://github.com/RayStx/job-application-assistant/releases) and extract.
 
 Go to `chrome://extensions/`, enable developer mode, load unpacked extension folder.
 

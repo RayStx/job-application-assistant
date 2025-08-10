@@ -71,7 +71,7 @@ React + TypeScript + Chrome扩展API。只使用本地浏览器存储，除了�
 
 ## 安装方法
 
-这是一个开发版扩展
+这是一个开发版扩展，从[releases](https://github.com/RayStx/job-application-assistant/releases)下载并解压
 
 前往`chrome://extensions/`，启用开发者模式，加载已解压的扩展文件夹。
 
