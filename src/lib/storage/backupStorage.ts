@@ -7,17 +7,21 @@ export interface BackupData {
     note?: string;
     isAutoBackup?: boolean;
   };
-  // Support both languages in one backup
-  zh: {
+  // Support both languages in one backup (new format v2.0+)
+  zh?: {
     applications: any[];
     cvVersions: any[];
     sections: any[];
   };
-  en: {
+  en?: {
     applications: any[];
     cvVersions: any[];
     sections: any[];
   };
+  // Legacy format (v1.0) - for backward compatibility
+  applications?: any[];
+  cvVersions?: any[];
+  sections?: any[];
 }
 
 export class BackupStorage {
@@ -131,6 +135,9 @@ export class BackupStorage {
       if (backup.zh && backup.en) {
         // New format - restore from specific language data
         const sourceData = backup[targetLanguage];
+        if (!sourceData) {
+          throw new Error(`No data found for language: ${targetLanguage}`);
+        }
         console.log(`Restoring ${sourceData.applications.length} apps, ${sourceData.cvVersions.length} cvs, ${sourceData.sections.length} sections`);
         
         // Clear existing data for target language only
@@ -184,7 +191,7 @@ export class BackupStorage {
 
   // Check if backup contains both languages (new format)
   isFullLanguageBackup(backup: BackupData): boolean {
-    return !!(backup.zh && backup.en);
+    return !!(backup.zh && backup.en) && !!backup.metadata?.version?.startsWith('2.');
   }
 
   async createBackup(data: Omit<BackupData, 'id'>): Promise<string> {
@@ -272,16 +279,78 @@ export class BackupStorage {
         throw new Error('Backup not found');
       }
 
-      const jsonData = JSON.stringify(backup, null, 2);
-      const blob = new Blob([jsonData], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `job-tracker-${backup.id}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      // Check if this is a dual language backup
+      if (this.isFullLanguageBackup(backup)) {
+        const timestamp = new Date().toISOString().split('T')[0];
+        
+        // Create Chinese backup
+        const zhBackup = {
+          id: `${backup.id}-zh`,
+          metadata: {
+            ...backup.metadata,
+            description: `${backup.metadata.description} (Chinese)`,
+            exportDate: new Date().toISOString()
+          },
+          applications: backup.zh!.applications,
+          cvVersions: backup.zh!.cvVersions,
+          sections: backup.zh!.sections
+        };
+        
+        // Create English backup
+        const enBackup = {
+          id: `${backup.id}-en`,
+          metadata: {
+            ...backup.metadata,
+            description: `${backup.metadata.description} (English)`,
+            exportDate: new Date().toISOString()
+          },
+          applications: backup.en!.applications,
+          cvVersions: backup.en!.cvVersions,
+          sections: backup.en!.sections
+        };
+
+        // Use JSZip to create a zip file with both backups
+        const JSZip = (await import('jszip')).default;
+        const zip = new JSZip();
+        
+        zip.file(`job-tracker-${timestamp}-chinese.json`, JSON.stringify(zhBackup, null, 2));
+        zip.file(`job-tracker-${timestamp}-english.json`, JSON.stringify(enBackup, null, 2));
+        
+        // Generate zip file
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const zipUrl = URL.createObjectURL(zipBlob);
+        const zipLink = document.createElement('a');
+        zipLink.href = zipUrl;
+        zipLink.download = `job-tracker-${timestamp}-dual-language.zip`;
+        document.body.appendChild(zipLink);
+        zipLink.click();
+        document.body.removeChild(zipLink);
+        URL.revokeObjectURL(zipUrl);
+
+        // Visual feedback
+        const successEl = document.createElement('div');
+        successEl.textContent = '✅ Exported dual language backup as ZIP file!';
+        successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+        document.body.appendChild(successEl);
+        setTimeout(() => {
+          if (document.body.contains(successEl)) {
+            document.body.removeChild(successEl);
+          }
+        }, 3000);
+        
+      } else {
+        // Legacy single file export
+        const jsonData = JSON.stringify(backup, null, 2);
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `job-tracker-${backup.id}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
     } catch (error) {
       console.error('Failed to export backup:', error);
       throw error;
@@ -293,24 +362,89 @@ export class BackupStorage {
       const text = await file.text();
       const backupData = JSON.parse(text);
 
-      // Validate backup structure
-      if (!backupData.metadata || !backupData.applications || !backupData.cvVersions || !backupData.sections) {
-        throw new Error('Invalid backup file format');
+      console.log('Importing backup file:', backupData);
+
+      // Check if this is a new format backup (v2.0+ with dual language support)
+      if (backupData.zh && backupData.en && backupData.metadata) {
+        console.log('New format backup detected (dual language)');
+        
+        // Validate new format structure
+        if (!backupData.metadata || 
+            !backupData.zh.applications || !backupData.zh.cvVersions || !backupData.zh.sections ||
+            !backupData.en.applications || !backupData.en.cvVersions || !backupData.en.sections) {
+          throw new Error('Invalid new format backup file structure');
+        }
+
+        // Store as new format backup
+        const backupId = `backup-${Date.now()}`;
+        const backup: BackupData = {
+          id: backupId,
+          metadata: {
+            ...backupData.metadata,
+            description: `Imported: ${backupData.metadata.description || 'Dual language backup'}`,
+            exportDate: new Date().toISOString(),
+            version: backupData.metadata.version || '2.0'
+          },
+          zh: {
+            applications: backupData.zh.applications,
+            cvVersions: backupData.zh.cvVersions,
+            sections: backupData.zh.sections
+          },
+          en: {
+            applications: backupData.en.applications,
+            cvVersions: backupData.en.cvVersions,
+            sections: backupData.en.sections
+          }
+        };
+
+        // Get existing backups and add this one
+        const existingBackups = await this.getAllBackups();
+        existingBackups.unshift(backup);
+        const trimmedBackups = existingBackups.slice(0, this.maxBackups);
+        await chrome.storage.local.set({ [this.storageKey]: trimmedBackups });
+
+        console.log(`New format backup imported successfully: ${backupId}`);
+        return backup;
+        
+      } else if (backupData.metadata && backupData.applications && backupData.cvVersions && backupData.sections) {
+        console.log('Legacy format backup detected');
+        
+        // Convert legacy format to new format (treat as Chinese data for backward compatibility)
+        const backupId = `backup-${Date.now()}`;
+        const backup: BackupData = {
+          id: backupId,
+          metadata: {
+            ...backupData.metadata,
+            description: `Imported Legacy: ${backupData.metadata.description || 'Legacy backup'}`,
+            exportDate: new Date().toISOString(),
+            version: '1.0-legacy'
+          },
+          zh: {
+            applications: backupData.applications,
+            cvVersions: backupData.cvVersions,
+            sections: backupData.sections
+          },
+          en: {
+            applications: [],
+            cvVersions: [],
+            sections: []
+          }
+        };
+
+        // Get existing backups and add this one
+        const existingBackups = await this.getAllBackups();
+        existingBackups.unshift(backup);
+        const trimmedBackups = existingBackups.slice(0, this.maxBackups);
+        await chrome.storage.local.set({ [this.storageKey]: trimmedBackups });
+
+        console.log(`Legacy backup converted and imported successfully: ${backupId}`);
+        return backup;
+        
+      } else {
+        console.error('Invalid backup file format:', Object.keys(backupData));
+        throw new Error('Invalid backup file format. Expected either new format (zh/en) or legacy format (applications/cvVersions/sections)');
       }
 
-      // Store as a backup
-      const backupId = await this.createBackup({
-        metadata: {
-          ...backupData.metadata,
-          description: `Imported: ${backupData.metadata.description}`,
-          exportDate: new Date().toISOString()
-        },
-        applications: backupData.applications,
-        cvVersions: backupData.cvVersions,
-        sections: backupData.sections
-      });
-
-      return await this.getBackup(backupId) as BackupData;
     } catch (error) {
       console.error('Failed to import backup:', error);
       throw error;
@@ -365,8 +499,8 @@ export class BackupStorage {
     // Handle new format (dual language) vs legacy format
     if (this.isFullLanguageBackup(oldBackup) && newData.zh && newData.en) {
       // Both are new format - compare both languages
-      return this.hasLanguageDataChanged(oldBackup.zh, newData.zh) || 
-             this.hasLanguageDataChanged(oldBackup.en, newData.en);
+      return this.hasLanguageDataChanged(oldBackup.zh!, newData.zh) || 
+             this.hasLanguageDataChanged(oldBackup.en!, newData.en);
     } else if (!this.isFullLanguageBackup(oldBackup) && (newData as any).applications) {
       // Both are legacy format
       const oldLegacy = oldBackup as any;

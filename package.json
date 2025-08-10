@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "type": "module",
   "description": "AI-powered job application tracker with professional resume management and LaTeX support",
-  "keywords": ["chrome-extension", "job-search", "resume", "ai", "latex", "career"],
+  "keywords": [
+    "chrome-extension",
+    "job-search",
+    "resume",
+    "ai",
+    "latex",
+    "career"
+  ],
   "author": "Job Assistant Extension Team",
   "license": "MIT",
   "homepage": "https://github.com/RayStx/job-application-assistant#readme",
@@ -24,6 +31,7 @@
   },
   "dependencies": {
     "diff": "^8.0.2",
+    "jszip": "^3.10.1",
     "mammoth": "^1.6.0",
     "pdfjs-dist": "^3.11.174",
     "react": "^18.2.0",

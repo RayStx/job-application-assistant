@@ -125,9 +125,24 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
       };
       
       await sectionStorage.saveSection(updatedSection);
+      
+      // Update the editingSection state immediately for UI sync
       setEditingSection(updatedSection);
       setEditingMetadata(false);
+      
+      // Reload data to ensure all components are in sync
       await loadData();
+      
+      // Visual feedback for successful metadata update
+      const successEl = document.createElement('div');
+      successEl.textContent = 'Metadata updated successfully!';
+      successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+      document.body.appendChild(successEl);
+      setTimeout(() => {
+        if (document.body.contains(successEl)) {
+          document.body.removeChild(successEl);
+        }
+      }, 2000);
     } catch (error) {
       console.error('Failed to update section metadata:', error);
       alert('Failed to update section metadata');
@@ -136,17 +151,35 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
   
 
   // Helper function to convert LaTeX to plain text
-  const generatePlainText = (latex: string): string => {
-    return latex
-      .replace(/\\textbf\{([^}]+)\}/g, '**$1**')
-      .replace(/\\textit\{([^}]+)\}/g, '*$1*')
-      .replace(/\\underline\{([^}]+)\}/g, '_$1_')
+  const generatePlainText = (text: string): string => {
+    return text
+      // Remove LaTeX formatting
+      .replace(/\\textbf\{([^}]+)\}/g, '$1')
+      .replace(/\\textit\{([^}]+)\}/g, '$1')
+      .replace(/\\underline\{([^}]+)\}/g, '$1')
       .replace(/\\datedsubsection\{([^}]+)\}\{([^}]+)\}/g, '$1\n$2')
       .replace(/\\begin\{itemize\}/g, '')
       .replace(/\\end\{itemize\}/g, '')
-      .replace(/\\item /g, '• ')
+      .replace(/\\item /g, '')
       .replace(/\\\\\s*/g, '\n')
       .replace(/\\n/g, '\n')
+      // Remove Markdown formatting
+      .replace(/\*\*([^*]+)\*\*/g, '$1')  // Remove bold
+      .replace(/\*([^*]+)\*/g, '$1')     // Remove italic
+      .replace(/_([^_]+)_/g, '$1')       // Remove underline
+      .replace(/^#+\s*/gm, '')           // Remove headers
+      .replace(/^>\s*/gm, '')            // Remove quotes
+      .replace(/^\*\s*/gm, '')           // Remove bullet points
+      .replace(/^-\s*/gm, '')            // Remove dashes
+      .replace(/^•\s*/gm, '')            // Remove bullets
+      .replace(/^\d+\.\s*/gm, '')        // Remove numbered lists
+      .replace(/`([^`]+)`/g, '$1')       // Remove inline code
+      .replace(/```[\s\S]*?```/g, '')    // Remove code blocks
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1') // Remove images, keep alt text
+      // Clean up extra whitespace
+      .replace(/\n\s*\n\s*\n/g, '\n\n')  // Remove multiple empty lines
+      .replace(/^\s+|\s+$/g, '')         // Trim whitespace
       .trim();
   };
 
@@ -170,10 +203,26 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
       };
       
       await sectionStorage.saveSection(updatedSection);
+      
+      // Update the editingSection state immediately to reflect changes in UI
       setEditingSection(updatedSection);
+      
       // Clear draft after successful save
       localStorage.removeItem(`section-draft-${updatedSection.id}`);
+      
+      // Reload data to ensure all components are in sync
       await loadData();
+      
+      // Visual feedback for successful save
+      const successEl = document.createElement('div');
+      successEl.textContent = 'Section saved successfully!';
+      successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+      document.body.appendChild(successEl);
+      setTimeout(() => {
+        if (document.body.contains(successEl)) {
+          document.body.removeChild(successEl);
+        }
+      }, 2000);
     } catch (error) {
       console.error('Failed to save section:', error);
       alert('Failed to save changes');
@@ -459,19 +508,21 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
               <div className="flex gap-3 mr-4">
                 <div className="flex items-center gap-2">
                   {(() => {
-                    const currentContent = editingSection?.latexContent || editingSection?.content || '';
-                    const hasChanges = editedContent !== currentContent;
-                    return hasChanges && (
-                      <div className="text-xs text-amber-600">
+                    if (!editingSection) return null;
+                    const currentContent = editingSection.latexContent || editingSection.content || '';
+                    const hasChanges = editedContent !== currentContent && editedContent !== '';
+                    return hasChanges ? (
+                      <div className="text-xs text-amber-600 font-medium">
                         ● Unsaved changes
                       </div>
-                    );
+                    ) : null;
                   })()}
                   <button
                     onClick={saveChanges}
                     disabled={(() => {
-                      const currentContent = editingSection?.latexContent || editingSection?.content || '';
-                      return editedContent === currentContent;
+                      if (!editingSection) return true;
+                      const currentContent = editingSection.latexContent || editingSection.content || '';
+                      return editedContent === currentContent || editedContent === '';
                     })()}
                     className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium"
                   >
@@ -481,8 +532,9 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
                 <button
                   onClick={saveAsNewVersion}
                   disabled={(() => {
-                    const currentContent = editingSection?.latexContent || editingSection?.content || '';
-                    return editedContent === currentContent;
+                    if (!editingSection) return true;
+                    const currentContent = editingSection.latexContent || editingSection.content || '';
+                    return editedContent === currentContent || editedContent === '';
                   })()}
                   className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
                   title="Create a copy with your changes"
@@ -493,6 +545,31 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
 
               {/* Secondary Actions */}
               <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    if (editingSection) {
+                      // Get the plain text content, not LaTeX
+                      const plainText = editingSection.content || generatePlainText(editedContent || editingSection.latexContent || '');
+                      navigator.clipboard.writeText(plainText);
+                      
+                      // Visual feedback
+                      const successEl = document.createElement('div');
+                      successEl.textContent = 'Plain text copied to clipboard!';
+                      successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+                      document.body.appendChild(successEl);
+                      setTimeout(() => {
+                        if (document.body.contains(successEl)) {
+                          document.body.removeChild(successEl);
+                        }
+                      }, 2000);
+                    }
+                  }}
+                  disabled={!editingSection}
+                  className="px-4 py-2 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  title="Copy section content as plain text"
+                >
+                  Copy Text
+                </button>
                 <button
                   onClick={() => {
                     if (editingSection && sections.length > 1) {
@@ -602,7 +679,24 @@ export function SectionLibrary({ onSectionSelect, mode = 'library', dataLanguage
                                   updated: new Date().toISOString()
                                 };
                                 await sectionStorage.saveSection(updatedSection);
+                                
+                                // If this is the currently editing section, update it too
+                                if (editingSection?.id === section.id) {
+                                  setEditingSection(updatedSection);
+                                }
+                                
                                 await loadData();
+                                
+                                // Visual feedback
+                                const successEl = document.createElement('div');
+                                successEl.textContent = 'Section updated successfully!';
+                                successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+                                document.body.appendChild(successEl);
+                                setTimeout(() => {
+                                  if (document.body.contains(successEl)) {
+                                    document.body.removeChild(successEl);
+                                  }
+                                }, 2000);
                               } catch (error) {
                                 console.error('Failed to update section:', error);
                                 alert('Failed to update section');
