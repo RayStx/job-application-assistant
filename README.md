@@ -6,17 +6,16 @@ A Chrome extension that manages the job application workflow.
 
 ## The problem I was trying to solve
 
-During my job search, I was interested in careers spanning multiple industries, and each company had different specific requirements. To increase the probability of my resume and cover letter passing through automated screening systems (i.e., modifying content to match keywords the target company might filter for), I needed to prepare different versions of resumes and cover letters for different positions.
+During my job search, I was interested in careers spanning multiple industries, and each company had different specific requirements. To increase the probability of my resume and cover letter (CV) passing through automated screening systems (i.e., modifying content to match keywords the target company might filter for), I needed to prepare different versions of resumes and CVs for different positions.
 
 This process created several problems:
-- Countless versions of resumes and cover letters scattered everywhere (Resume_v1.pdf, Resume_final.pdf, Resume_ACTUALLY_final.pdf...)
-- Tracking which resume and cover letter corresponded to which application became difficult, causing trouble for subsequent interview processes
-- My applications included multiple languages, requiring separate version management
+- Many versions of resumes and CVs scattered everywhere (Resume_v1.pdf, Resume_v2.pdf, Resume_recent.pdf...); tracking these resumes and CVs with their corresponding job applications became difficult, causing trouble for subsequent interview processes
+- When preparing new resumes and CVs, the editing process was tedious, requiring copying to new versions and switching between various versions to find reusable materials
+- My applications were in Chinese/English, requiring separate version management
 
 Therefore, I needed something that could:
-- Automatically parse job information and manage it centrally
-- Manage different versions of resumes and cover letters in a modular way
-- Clearly track which version of documents was used for each application
+- Integrate job information, centrally manage resumes and CVs, and support version comparison
+- Quickly find reusable materials when editing new versions
 - Support separate Chinese and English management
 - Keep data stored locally (for privacy reasons)
 
@@ -99,5 +98,3 @@ My ideal job involves full-cycle AI product development (1. User research; 2. Pr
 
 **Code**: https://github.com/RayStx/job-application-assistant  
 **Issues**: https://github.com/RayStx/job-application-assistant/issues
-
-Built during PhD job hunting when existing tools didn't match my workflow. Sharing in case others have similar frustrations.

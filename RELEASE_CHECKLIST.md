@@ -41,7 +41,7 @@
 
 2. **Tag Version**
    ```bash
-   git tag -a v1.0.0 -m "Job Assistant Extension v1.0.0"
+   git tag -a v1.0.0 -m "Job Application Assistant v1.0.0"
    ```
 
 3. **Push to GitHub**

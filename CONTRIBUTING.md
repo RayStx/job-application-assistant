@@ -1,6 +1,6 @@
-# Contributing to Job Assistant Extension
+# Contributing to Job Application Assistant
 
-Thank you for your interest in contributing to Job Assistant Extension! We welcome contributions from the community.
+Thank you for your interest in contributing to Job Application Assistant! We welcome contributions from the community.
 
 ## Development Setup
 

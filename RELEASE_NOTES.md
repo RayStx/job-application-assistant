@@ -1,27 +1,28 @@
-# Job Assistant Extension - Release Notes
+# Job Application Assistant - Release Notes
 
 ## Version 1.0.0 (Initial Release)
 
 ### 🚀 Core Features
 
 #### **Intelligent Job Parsing**
-- AI-powered job posting extraction from any website
-- Support for major job platforms (LinkedIn, Indeed, Glassdoor, etc.)
+- AI-powered job posting extraction from websites
+- Support for Chinese job platforms (阿里, 字节, 腾讯)
 - Intelligent text parsing with OpenAI GPT-4o-mini
-- Automatic extraction of: title, company, description, requirements, salary, location
+- Manual entry also supported
+- Automatic extraction of: title, company, description, requirements
 
 #### **Professional Resume Management**
-- Built-in LaTeX resume editor with syntax highlighting
-- Version control system for resume iterations
 - Modular section library (education, experience, projects)
+- Mix and match sections for different applications
+- Version control with automatic numbering
 - Application-specific resume linking
-- Export and LaTeX compilation support
+- LaTeX editor for professional PDF output
 
 #### **Cover Letter Management**
-- Dedicated cover letter editor with version control
-- Template system for quick customization
-- Application linking for personalized letters
-- Markdown formatting support
+- Similar modular approach as resumes
+- Version control and application linking
+- Template system for reusable content
+- Particularly useful for international applications
 
 #### **Advanced Application Tracking**
 - Comprehensive status management (saved, applied, interviewing, offered, rejected)
