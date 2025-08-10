@@ -71,18 +71,12 @@ React + TypeScript + Chrome扩展API。只使用本地浏览器存储，除了�
 
 ## 安装方法
 
-这是一个开发版扩展，所以安装需要几个手动步骤。我包含了助手脚本来简化过程：
+这是一个开发版扩展
 
-**自动设置**：
-1. 从[releases](https://github.com/RayStx/job-application-assistant/releases)下载并解压
-2. 运行安装脚本（Windows上的`install.bat`，或Mac/Linux上的`./install.sh`）
-3. 脚本会打开Chrome的扩展页面
-4. 启用"开发者模式"并点击"加载已解压的扩展程序"
-5. 选择扩展文件夹
-
-**手动设置**：前往`chrome://extensions/`，启用开发者模式，加载已解压的扩展。
+前往`chrome://extensions/`，启用开发者模式，加载已解压的扩展文件夹。
 
 **开始使用**：
+
 - 首次运行：点击扩展图标，可选择添加OpenAI API密钥用于岗位解析
 - **包含示例**：Release中包含简历模板和数据库模板，帮助快速上手
 

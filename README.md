@@ -71,16 +71,9 @@ React + TypeScript + Chrome Extension API. Local browser storage only, privacy-f
 
 ## Getting it running
 
-This is a development extension, so installation requires a few manual steps. I've included helper scripts to simplify the process:
+This is a development extension
 
-**Automatic setup**:
-1. Download from [releases](https://github.com/RayStx/job-application-assistant/releases) and extract
-2. Run the install script (`install.bat` on Windows, or `./install.sh` on Mac/Linux)
-3. The script opens Chrome's extension page
-4. Enable "Developer mode" and click "Load unpacked"
-5. Select the extension folder
-
-**Manual setup**: Go to `chrome://extensions/`, enable developer mode, load unpacked extension.
+Go to `chrome://extensions/`, enable developer mode, load unpacked extension folder.
 
 **Getting started**: 
 - First run: Click the extension icon to optionally add an OpenAI API key for job parsing
