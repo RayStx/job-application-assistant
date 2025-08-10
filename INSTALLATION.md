@@ -1,58 +1,56 @@
 # Installation Guide
 
-## Quick Start
+## 🚀 Quick Install (Recommended)
 
-### 1. Get the Extension
+### Automatic Installation Helper
 
-**Option A: Download Release**
-- Download the latest release from [Releases page](https://github.com/YOUR_USERNAME/job-assistant-extension/releases)
-- Extract the ZIP file
+1. **Download & Extract**
+   - Go to [Releases](https://github.com/RayStx/job-assistant-extension/releases)
+   - Download `job-assistant-extension.zip`
+   - Extract to any folder
 
-**Option B: Build from Source**
-```bash
-git clone https://github.com/YOUR_USERNAME/job-assistant-extension.git
-cd job-assistant-extension
-npm install
-npm run build
-```
+2. **Run Install Helper**
+   - **Windows**: Double-click `install.bat`
+   - **Mac/Linux**: Run `./install.sh` in terminal
+   - The script will auto-open Chrome extensions page
 
-### 2. Load in Chrome
+3. **Follow On-Screen Instructions**
+   - Enable "Developer mode" in Chrome
+   - Click "Load unpacked"
+   - Select the extracted folder
 
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable "Developer mode" (toggle in top-right)
-3. Click "Load unpacked"
-4. Select the `dist/` folder
+### Manual Installation
 
-### 3. Setup API Key
+If the automatic helper doesn't work:
 
-1. Get an OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys)
-2. Click the extension icon in Chrome
-3. Enter your API key when prompted
-4. The key is stored securely in local storage
+1. **Open Chrome Extensions**
+   - Go to `chrome://extensions/` in Chrome
+   - Enable "Developer mode" (top-right toggle)
 
-### 4. Start Using
+2. **Load Extension**
+   - Click "Load unpacked"
+   - Select the folder containing `manifest.json`
 
-- Click the extension icon on any job posting page
-- Use "Parse Current Page" to extract job information
-- Access the dashboard to manage applications, resumes, and cover letters
+3. **Setup**
+   - Click extension icon → enter OpenAI API key
+   - Start parsing job postings!
 
-## System Requirements
+## Requirements
 
-- Google Chrome 88+ (or any Chromium-based browser)
-- OpenAI API access
-- ~5MB free storage space
+- Chrome/Edge/Brave browser
+- OpenAI API key ([Get free credits](https://platform.openai.com/api-keys))
+- Cost: ~$0.10-0.20/month for 100 job parsings
 
 ## Troubleshooting
 
-**Extension not loading?**
-- Make sure Developer mode is enabled
-- Check that you selected the `dist/` folder (not the root project folder)
+**Chrome not opening?**
+- Run the install script from the extension folder
+- Ensure Chrome is installed in default location
 
-**Parsing not working?**
-- Verify your OpenAI API key is correct
-- Check your internet connection
-- Ensure you have sufficient API credits
+**Extension not loading?**
+- Make sure you select the folder with `manifest.json`
+- Check "Developer mode" is enabled
 
 **Need help?**
-- Check the [Issues page](https://github.com/YOUR_USERNAME/job-assistant-extension/issues)
-- Create a new issue with details about your problem
+- [GitHub Issues](https://github.com/RayStx/job-assistant-extension/issues)
+- [Installation Video Guide](https://github.com/RayStx/job-assistant-extension/wiki) (coming soon)

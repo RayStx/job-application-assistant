@@ -52,3 +52,6 @@ copy-assets.js
 
 # Examples with large files
 examples/
+
+# Claude AI assistant files
+.claude/
