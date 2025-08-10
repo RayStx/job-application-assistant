@@ -5,7 +5,7 @@
 ### Automatic Installation Helper
 
 1. **Download & Extract**
-   - Go to [Releases](https://github.com/RayStx/job-assistant-extension/releases)
+   - Go to [Releases](https://github.com/RayStx/job-application-assistant/releases)
    - Download `job-assistant-extension.zip`
    - Extract to any folder
 
@@ -52,5 +52,5 @@ If the automatic helper doesn't work:
 - Check "Developer mode" is enabled
 
 **Need help?**
-- [GitHub Issues](https://github.com/RayStx/job-assistant-extension/issues)
-- [Installation Video Guide](https://github.com/RayStx/job-assistant-extension/wiki) (coming soon)
+- [GitHub Issues](https://github.com/RayStx/job-application-assistant/issues)
+- [Installation Video Guide](https://github.com/RayStx/job-application-assistant/wiki) (coming soon)

@@ -52,7 +52,7 @@ echo - 输入OpenAI API密钥
 echo - 开始解析岗位信息
 echo.
 echo ❓ 需要帮助？查看详细指南：
-echo    https://github.com/RayStx/job-assistant-extension#installation
+echo    https://github.com/RayStx/job-application-assistant#installation
 echo.
 echo ✅ 安装助手完成！
 echo.
