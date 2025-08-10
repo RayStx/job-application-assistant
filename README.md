@@ -2,35 +2,81 @@
 
 [中文文档](./README_CN.md) | English Documentation
 
-A Chrome extension born from the chaos of PhD job hunting.
+A Chrome extension that manages the job application workflow.
 
 ## The problem I was trying to solve
 
-During my PhD job search, I found myself drowning in a mess of files. Resume_v1.pdf, Resume_final.pdf, Resume_ACTUALLY_final.pdf scattered across Desktop and Downloads. Cover letters with 90% identical content but slightly tweaked for different positions. Worst of all, I had no clue which version I'd sent to which company - did I send the research-heavy resume to that startup, or was it the industry-focused one?
+During my job search, I was interested in careers spanning multiple industries, and each company had different specific requirements. To increase the probability of my resume and cover letter passing through automated screening systems (i.e., modifying content to match keywords the target company might filter for), I needed to prepare different versions of resumes and cover letters for different positions.
 
-I was applying to both Chinese companies (阿里, 字节, 腾讯) and international positions, which meant managing two completely separate workflows. The existing tools either cost too much for a broke PhD student, required uploading data to random servers, or were built for HR departments rather than job seekers.
+This process created several problems:
+- Countless versions of resumes and cover letters scattered everywhere (Resume_v1.pdf, Resume_final.pdf, Resume_ACTUALLY_final.pdf...)
+- Tracking which resume and cover letter corresponded to which application became difficult, causing trouble for subsequent interview processes
+- My applications included multiple languages, requiring separate version management
 
-I needed something that could parse job postings automatically (because manually copying job descriptions is mind-numbing), let me build targeted resume versions without starting from scratch each time, and most importantly, keep track of what I sent where.
+Therefore, I needed something that could:
+- Automatically parse job information and manage it centrally
+- Manage different versions of resumes and cover letters in a modular way
+- Clearly track which version of documents was used for each application
+- Support separate Chinese and English management
+- Keep data stored locally (for privacy reasons)
 
-## How I solved it
+This extension satisfies all my requirements above. Later, I plan to develop interview management based on my needs, hoping to connect all the databases together to make my job search process smoother.
 
-**Job parsing**: Built a parser that extracts job details from posting pages. I tested it extensively on Chinese job platforms since that's where I was applying most. It uses OpenAI's API to make sense of the page content, but it's optional - manual entry works fine too.
+## Demonstrations
 
-**Resume versioning**: Instead of managing countless files, I created a modular system. I can build reusable sections (education, work experience, projects) and mix them into different resume versions. Each version gets automatic numbering and links to specific applications. The LaTeX editor means I can get properly formatted PDFs without fighting with Word.
+### Step 1: Parse Job Information
+On a job description page, click `Parse Current Page`. The extension will automatically parse the job description and save it as a job application.
 
-**Cover letter workflow**: Similar approach for cover letters, especially important since international applications usually expect personalized letters. I can see which letter version went with which application.
+![Parse Job Posting](./docs/images/p1-parse-job.png)
 
-**Separate datasets**: Chinese and English applications live in completely separate data spaces. No more accidentally sending a Chinese resume to an international position.
+**Note**: Automatic parsing requires LLMs, but you can also choose to add manually.
 
-**Local storage**: Everything stays in the browser. No accounts, no servers, no monthly fees, no privacy concerns.
+### Step 2: Enter Management Dashboard
+After saving, enter the Dashboard to begin the job application management workflow. Chinese and English databases can be switched by clicking the icon in the top-right corner.
+
+![Dashboard Overview](./docs/images/p3-dashboard.png)
+
+### Step 3: Create Experience Modules
+Click open Library to create past experiences, preparing content for your resume. All materials are centrally managed here.
+
+![Experience Library](./docs/images/p4-library.png)
+
+### Step 4: Assemble Resume
+After preparing all experiences, go to the Resume page and directly insert corresponding sections to create your resume.
+
+![Resume Builder](./docs/images/p5-resume-builder.png)
+
+You can flexibly combine different experience modules to adapt to different types of position requirements.
+
+![Resume Editing](./docs/images/p6-resume-edit.png)
+
+### Step 5: PDF Generation
+Currently uses a fixed LaTeX template to generate professionally formatted PDF resumes.
+
+![Generated PDF](./docs/images/p7-pdf-output.png)
+
+### Step 6: Cover Letter
+Cover letter operations follow similar logic, also supporting modular management.
+
+![Cover Letter](./docs/images/p8-cover-letter.png)
+
+### Version Tracking
+Both resumes and cover letters can be directly linked to applications for convenient version tracking. You'll always know which version you sent to which company.
+
+### Data Management
+All data is stored locally. Data under each tab can be saved individually, and the entire dashboard's data can be imported/exported, making it convenient for future migration to other projects.
+
+## Technical bits
+
+React + TypeScript + Chrome Extension API. Local browser storage only, privacy-free except for optional OpenAI calls. Includes a LaTeX editor for proper resume formatting.
 
 ## Getting it running
 
-This is a development extension, so installation involves a few manual steps. I've included helper scripts to make it easier:
+This is a development extension, so installation requires a few manual steps. I've included helper scripts to simplify the process:
 
 **Automatic setup**:
 1. Download from [releases](https://github.com/RayStx/job-application-assistant/releases) and extract
-2. Run the install script (`install.bat` on Windows, `./install.sh` on Mac/Linux)
+2. Run the install script (`install.bat` on Windows, or `./install.sh` on Mac/Linux)
 3. The script opens Chrome's extension page
 4. Enable "Developer mode" and click "Load unpacked"
 5. Select the extension folder
@@ -39,31 +85,15 @@ This is a development extension, so installation involves a few manual steps. I'
 
 First run: Click the extension icon to optionally add an OpenAI API key for job parsing.
 
-## What it actually does
+## Project Background
 
-**Job parsing**: On a job posting page, click the extension to parse details automatically. I mainly tested this on Chinese platforms, but manual entry works everywhere.
+All functionality development is based on my own needs, hoping to help others along the way.
 
-**Resume building**: The Library tab is where I build reusable sections. Then I assemble different resume versions from these sections, each getting a version number and linking to specific applications.
+The project code is basically all generated by Claude-code.
 
-**Cover letters**: Same modular approach. Build templates, create versions, link to applications.
+The deliverables are very basic in quality. If there are already better tools on the market, please recommend them to me.
 
-**Language switching**: Toggle between Chinese and English datasets. Backup function exports everything or restores from previous backups.
-
-## What this isn't
-
-This extension solved my specific PhD job search problems, but it's not for everyone:
-
-- Requires developer mode installation
-- Job parsing works best on Chinese platforms (that's where I tested it)
-- No mobile version
-- Built by someone who needed it, not a product team
-- Assumes basic technical comfort
-
-If this workflow doesn't match what's needed, there are plenty of polished alternatives out there.
-
-## Technical bits
-
-React + TypeScript + Chrome Extension API. Local browser storage only, except for optional OpenAI calls. Includes a LaTeX editor for proper resume formatting.
+My ideal job involves full-cycle AI product development (1. User research; 2. Product implementation; 3. Impact evaluation). If you have any position recommendations, I would be deeply grateful.
 
 ---
 
