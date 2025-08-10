@@ -6,7 +6,7 @@
 
 1. **Download & Extract**
    - Go to [Releases](https://github.com/RayStx/job-application-assistant/releases)
-   - Download `job-assistant-extension.zip`
+   - Download `job-application-assistant.zip`
    - Extract to any folder
 
 2. **Run Install Helper**

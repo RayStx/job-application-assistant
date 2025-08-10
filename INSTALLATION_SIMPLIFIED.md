@@ -5,8 +5,8 @@
 ### 方式一：从Release下载（推荐）
 
 1. **下载预构建版本**
-   - 访问：https://github.com/RayStx/job-assistant-extension/releases
-   - 下载最新的`job-assistant-extension-v1.0.0.zip`
+   - 访问：https://github.com/RayStx/job-application-assistant/releases
+   - 下载最新的`job-application-assistant-v1.0.0.zip`
    - 解压到任意文件夹
 
 2. **一键安装脚本**（Windows/Mac）

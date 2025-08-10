@@ -6,8 +6,8 @@ Thank you for your interest in contributing to Job Assistant Extension! We welco
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/job-assistant-extension.git
-   cd job-assistant-extension
+   git clone https://github.com/YOUR_USERNAME/job-application-assistant.git
+   cd job-application-assistant
    ```
 
 2. **Install dependencies**
