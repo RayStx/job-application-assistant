@@ -82,7 +82,9 @@ This is a development extension, so installation requires a few manual steps. I'
 
 **Manual setup**: Go to `chrome://extensions/`, enable developer mode, load unpacked extension.
 
-First run: Click the extension icon to optionally add an OpenAI API key for job parsing.
+**Getting started**: 
+- First run: Click the extension icon to optionally add an OpenAI API key for job parsing
+- **Examples included**: The release contains example resume templates and database templates to help you get started quickly
 
 ## Project Background
 

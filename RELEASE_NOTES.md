@@ -2,84 +2,56 @@
 
 ## Version 1.0.0 (Initial Release)
 
-### 🚀 Core Features
+### 核心功能
 
-#### **Intelligent Job Parsing**
-- AI-powered job posting extraction from websites
-- Support for Chinese job platforms (阿里, 字节, 腾讯)
-- Intelligent text parsing with OpenAI GPT-4o-mini
-- Manual entry also supported
-- Automatic extraction of: title, company, description, requirements
+**岗位管理**
+- 自动解析招聘页面信息（主要支持中文平台：阿里、字节、腾讯等）
+- 手动添加职位信息
+- 使用OpenAI API进行智能解析（可选）
 
-#### **Professional Resume Management**
-- Modular section library (education, experience, projects)
-- Mix and match sections for different applications
-- Version control with automatic numbering
-- Application-specific resume linking
-- LaTeX editor for professional PDF output
+**简历管理** 
+- 模块化经历库：教育、工作、项目等可复用模块
+- 组合不同模块创建针对性简历版本
+- 自动版本编号和追踪
+- LaTeX编辑器生成专业PDF格式
 
-#### **Cover Letter Management**
-- Similar modular approach as resumes
-- Version control and application linking
-- Template system for reusable content
-- Particularly useful for international applications
+**求职信管理**
+- 类似简历的模块化管理方式
+- 版本控制和申请关联
+- 特别适用于国际申请
 
-#### **Advanced Application Tracking**
-- Comprehensive status management (saved, applied, interviewing, offered, rejected)
-- Dual language support (separate Chinese and English datasets)
-- Detailed application information with inline editing
-- Personal notes and timeline tracking
+**版本追踪**
+- 每个申请清楚记录使用的简历和求职信版本
+- 支持中英文数据分离管理
+- 本地存储确保隐私安全
 
-#### **Backup & Data Management**
-- **Full Language Backup**: Automatic backup of both Chinese and English datasets
-- Smart backup system with change detection
-- Selective restore options by language
-- CSV export for external analysis
-- Complete local storage privacy
+**数据管理**
+- 完整的备份和导入/导出功能
+- 分语言数据管理
+- 纯本地存储，无云端同步
 
-#### **Multi-Language Support**
-- Chinese and English UI languages
-- Independent data management for different languages
-- Language-aware content handling
+### 安装方法
 
-### 🛠️ Technical Highlights
+1. 从[Releases](https://github.com/RayStx/job-application-assistant/releases)下载并解压
+2. 运行安装脚本（Windows: `install.bat`，Mac/Linux: `./install.sh`）
+3. 在Chrome扩展页面启用"开发者模式"并加载扩展
 
-- **Frontend**: React 18 + TypeScript + Tailwind CSS
-- **Extension**: Chrome Manifest V3 compliant
-- **AI Integration**: Cost-effective OpenAI integration (~$0.10-0.20/month for 100 applications)
-- **Storage**: Secure local Chrome storage with encryption
-- **Build**: Optimized Vite build system
+### 包含内容
 
-### 📋 Installation Requirements
+- Chrome扩展主体文件
+- 安装助手脚本
+- 简历模板示例
+- 数据库模板示例
+- 详细使用文档
 
-- Google Chrome browser (or Chromium-based)
-- OpenAI API key for job parsing
-- ~120KB storage space
+### 技术栈
 
-### 🎯 Target Users
+React + TypeScript + Chrome Extension API + LaTeX
 
-- Job seekers managing multiple applications
-- Professionals requiring LaTeX resume compilation
-- Users needing dual-language job tracking (Chinese/English)
-- Anyone seeking privacy-focused local data management
+### 隐私说明
 
-### 🔒 Privacy & Security
-
-- **100% Local Storage**: All data stored in Chrome local storage
-- **No Cloud Sync**: Your data never leaves your browser
-- **API Usage**: Only OpenAI calls for job parsing (encrypted)
-- **No Tracking**: Zero analytics or user tracking
-
-### 🌟 What Makes This Special
-
-1. **Complete Solution**: Job parsing + resume management + application tracking in one tool
-2. **Professional Quality**: LaTeX support for professional resume output
-3. **Language Flexibility**: True dual-language support with separate datasets
-4. **Privacy First**: Complete local data control
-5. **Cost Effective**: Minimal API costs with maximum functionality
+所有数据存储在本地浏览器中，除OpenAI API调用外无任何外部数据传输。
 
 ---
 
-**Ready for Production Use** ✅
-
-This release represents a fully functional, production-ready job search assistant extension with professional-grade features for modern job seekers.
+适合需要管理多个求职申请、追踪简历版本、支持中英文分离的求职者使用。
