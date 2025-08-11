@@ -309,27 +309,36 @@ export class BackupStorage {
           sections: backup.en!.sections
         };
 
-        // Use JSZip to create a zip file with both backups
-        const JSZip = (await import('jszip')).default;
-        const zip = new JSZip();
-        
-        zip.file(`job-tracker-${timestamp}-chinese.json`, JSON.stringify(zhBackup, null, 2));
-        zip.file(`job-tracker-${timestamp}-english.json`, JSON.stringify(enBackup, null, 2));
-        
-        // Generate zip file
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
-        const zipUrl = URL.createObjectURL(zipBlob);
-        const zipLink = document.createElement('a');
-        zipLink.href = zipUrl;
-        zipLink.download = `job-tracker-${timestamp}-dual-language.zip`;
-        document.body.appendChild(zipLink);
-        zipLink.click();
-        document.body.removeChild(zipLink);
-        URL.revokeObjectURL(zipUrl);
+        // Export separate files for Chinese and English
+        const zhJson = JSON.stringify(zhBackup, null, 2);
+        const zhBlob = new Blob([zhJson], { type: 'application/json' });
+        const zhUrl = URL.createObjectURL(zhBlob);
+        const zhLink = document.createElement('a');
+        zhLink.href = zhUrl;
+        zhLink.download = `job-tracker-${timestamp}-chinese.json`;
+        document.body.appendChild(zhLink);
+        zhLink.click();
+        document.body.removeChild(zhLink);
+        URL.revokeObjectURL(zhUrl);
+
+        // Small delay to ensure first download starts
+        setTimeout(() => {
+          // Export English backup
+          const enJson = JSON.stringify(enBackup, null, 2);
+          const enBlob = new Blob([enJson], { type: 'application/json' });
+          const enUrl = URL.createObjectURL(enBlob);
+          const enLink = document.createElement('a');
+          enLink.href = enUrl;
+          enLink.download = `job-tracker-${timestamp}-english.json`;
+          document.body.appendChild(enLink);
+          enLink.click();
+          document.body.removeChild(enLink);
+          URL.revokeObjectURL(enUrl);
+        }, 100);
 
         // Visual feedback
         const successEl = document.createElement('div');
-        successEl.textContent = '✅ Exported dual language backup as ZIP file!';
+        successEl.textContent = '✅ Exported separate Chinese and English backup files!';
         successEl.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
         document.body.appendChild(successEl);
         setTimeout(() => {
